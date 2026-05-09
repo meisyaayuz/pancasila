@@ -8,6 +8,10 @@ import { ReportDetail } from "./pages/ReportDetail";
 import { MyReports } from "./pages/MyReports";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
+import { ForgotPassword } from "./pages/ForgotPassword";
+import { ResetPassword } from "./pages/ResetPassword";
+import { Settings } from "./pages/Settings";
+import { Help } from "./pages/Help";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +21,14 @@ export const router = createBrowserRouter([
   {
     path: "/register",
     Component: Register,
+  },
+  {
+    path: "/forgot-password",
+    Component: ForgotPassword,
+  },
+  {
+    path: "/reset-password",
+    Component: ResetPassword,
   },
   {
     path: "/",
@@ -65,6 +77,14 @@ export const router = createBrowserRouter([
             <MyReports />
           </ProtectedRoute>
         )
+      },
+      {
+        path: "settings",
+        element: <Settings />,
+      },
+      {
+        path: "help",
+        element: <Help />,
       },
     ],
   },

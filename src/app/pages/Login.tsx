@@ -145,9 +145,9 @@ export function Login() {
                   </div>
                   <span className="text-sm text-gray-600 font-medium">Remember me</span>
                 </label>
-                <button type="button" className="text-sm text-gray-600 font-medium hover:text-purple-600 transition-colors">
+                <Link to="/forgot-password" className="text-sm text-gray-600 font-medium hover:text-purple-600 transition-colors">
                   Forgot Password?
-                </button>
+                </Link>
               </div>
 
               <button

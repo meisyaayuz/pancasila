@@ -167,14 +167,28 @@ export function Sidebar() {
         {/* Bottom links */}
         <div className="mt-6 space-y-2">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-3">Lainnya</p>
-          <button className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-xl transition-all">
-            <Settings className="w-5 h-5 text-gray-600" />
+          <Link
+            to="/settings"
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+              isActive('/settings')
+                ? 'bg-[#00158b] text-white shadow-lg shadow-[#00158b]/30'
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <Settings className={`w-5 h-5 ${isActive('/settings') ? 'text-white' : 'text-gray-600'}`} />
             <span className="font-medium text-sm">Pengaturan</span>
-          </button>
-          <button className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-xl transition-all">
-            <HelpCircle className="w-5 h-5 text-gray-600" />
+          </Link>
+          <Link
+            to="/help"
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+              isActive('/help')
+                ? 'bg-[#00158b] text-white shadow-lg shadow-[#00158b]/30'
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <HelpCircle className={`w-5 h-5 ${isActive('/help') ? 'text-white' : 'text-gray-600'}`} />
             <span className="font-medium text-sm">Bantuan</span>
-          </button>
+          </Link>
           <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all">
             <LogOut className="w-5 h-5" />
             <span className="font-medium text-sm">Keluar</span>

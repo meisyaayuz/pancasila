@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -101,6 +102,63 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Logged out successfully'
+        ]);
+    }
+
+    /**
+     * Update the authenticated user's profile (name, avatar).
+     */
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'avatar' => 'nullable|string|max:10',
+        ]);
+
+        $user = $request->user();
+        $user->name = $request->name;
+        if ($request->has('avatar')) {
+            $user->avatar = $request->avatar;
+        }
+        $user->save();
+
+        return response()->json([
+            'message' => 'Profil berhasil diperbarui.',
+            'user' => [
+                'id' => (string) $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+                'class' => $user->class,
+                'subject' => $user->subject,
+                'avatar' => $user->avatar,
+            ],
+        ]);
+    }
+
+    /**
+     * Update the authenticated user's password.
+     */
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = $request->user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => ['Password lama tidak sesuai.'],
+            ]);
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json([
+            'message' => 'Password berhasil diperbarui.',
         ]);
     }
 }

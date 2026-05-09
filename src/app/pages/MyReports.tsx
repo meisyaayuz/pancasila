@@ -466,28 +466,28 @@ export function MyReports() {
 
       {/* Chat Modal */}
       {showChatModal && selectedChatReport && user && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-3xl w-full">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-                  <MessageCircle className="w-6 h-6 text-white" />
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center z-[60] p-0 sm:p-4">
+          <div className="bg-white rounded-t-2xl sm:rounded-2xl shadow-xl w-full sm:max-w-3xl max-h-[90vh] sm:max-h-[85vh] flex flex-col overflow-hidden">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 flex-shrink-0">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Chat dengan Guru BK</h2>
-                  <p className="text-sm text-gray-600">Laporan #{selectedChatReport.id.split('-')[1]}</p>
+                <div className="min-w-0">
+                  <h2 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">Chat dengan Guru BK</h2>
+                  <p className="text-xs sm:text-sm text-gray-600">Laporan #{selectedChatReport.id.split('-')[1]}</p>
                 </div>
               </div>
               <button
                 onClick={() => setShowChatModal(false)}
-                className="text-gray-500 hover:text-gray-700 transition-colors"
+                className="text-gray-500 hover:text-gray-700 transition-colors p-1 flex-shrink-0"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
             
             {/* Chat Box */}
-            <div className="p-6">
+            <div className="flex-1 min-h-0 p-3 sm:p-6">
               <ChatBox 
                 report={selectedChatReport}
                 userId={user.id}
