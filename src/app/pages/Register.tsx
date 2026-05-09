@@ -144,48 +144,15 @@ export function Register() {
                   required
                 >
                   <option value="" disabled>Pilih Kelas</option>
-                  <optgroup label="Kelas X">
-                    <option value="X IPA 1">X IPA 1</option>
-                    <option value="X IPA 2">X IPA 2</option>
-                    <option value="X IPA 3">X IPA 3</option>
-                    <option value="X IPA 4">X IPA 4</option>
-                    <option value="X IPA 5">X IPA 5</option>
-                    <option value="X IPA 6">X IPA 6</option>
-                    <option value="X IPS 1">X IPS 1</option>
-                    <option value="X IPS 2">X IPS 2</option>
-                    <option value="X IPS 3">X IPS 3</option>
-                    <option value="X IPS 4">X IPS 4</option>
-                    <option value="X IPS 5">X IPS 5</option>
-                    <option value="X IPS 6">X IPS 6</option>
-                  </optgroup>
-                  <optgroup label="Kelas XI">
-                    <option value="XI IPA 1">XI IPA 1</option>
-                    <option value="XI IPA 2">XI IPA 2</option>
-                    <option value="XI IPA 3">XI IPA 3</option>
-                    <option value="XI IPA 4">XI IPA 4</option>
-                    <option value="XI IPA 5">XI IPA 5</option>
-                    <option value="XI IPA 6">XI IPA 6</option>
-                    <option value="XI IPS 1">XI IPS 1</option>
-                    <option value="XI IPS 2">XI IPS 2</option>
-                    <option value="XI IPS 3">XI IPS 3</option>
-                    <option value="XI IPS 4">XI IPS 4</option>
-                    <option value="XI IPS 5">XI IPS 5</option>
-                    <option value="XI IPS 6">XI IPS 6</option>
-                  </optgroup>
-                  <optgroup label="Kelas XII">
-                    <option value="XII IPA 1">XII IPA 1</option>
-                    <option value="XII IPA 2">XII IPA 2</option>
-                    <option value="XII IPA 3">XII IPA 3</option>
-                    <option value="XII IPA 4">XII IPA 4</option>
-                    <option value="XII IPA 5">XII IPA 5</option>
-                    <option value="XII IPA 6">XII IPA 6</option>
-                    <option value="XII IPS 1">XII IPS 1</option>
-                    <option value="XII IPS 2">XII IPS 2</option>
-                    <option value="XII IPS 3">XII IPS 3</option>
-                    <option value="XII IPS 4">XII IPS 4</option>
-                    <option value="XII IPS 5">XII IPS 5</option>
-                    <option value="XII IPS 6">XII IPS 6</option>
-                  </optgroup>
+                  {[10, 11, 12].map((grade) => (
+                    <optgroup key={grade} label={`Kelas ${grade}`}>
+                      {Array.from({ length: 12 }, (_, i) => i + 1).map((num) => (
+                        <option key={`${grade}-${num}`} value={`${grade}-${num}`}>
+                          {grade}-{num}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
                 </select>
               </div>
 

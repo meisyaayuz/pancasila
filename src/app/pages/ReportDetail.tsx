@@ -12,13 +12,11 @@ import {
   Shield,
   Calendar,
   Hash,
-  Save,
-  Phone,
-  X
+  Save
 } from 'lucide-react';
 import { RiskBadge } from '../components/RiskBadge';
 import { ChatBox } from '../components/ChatBox';
-import { getReportById, updateReportStatus, updateReportNotes, createContactRequest, type Report } from '../services/reportService';
+import { getReportById, updateReportStatus, updateReportNotes, type Report } from '../services/reportService';
 import { useAuth } from '../contexts/AuthContext';
 
 export function ReportDetail() {
@@ -28,14 +26,7 @@ export function ReportDetail() {
   const [report, setReport] = useState<Report | null>(null);
   const [notes, setNotes] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const [showContactModal, setShowContactModal] = useState(false);
-  const [contactForm, setContactForm] = useState({
-    date: '',
-    time: '',
-    location: '',
-    message: ''
-  });
-  const [isSendingRequest, setIsSendingRequest] = useState(false);
+
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -83,39 +74,7 @@ export function ReportDetail() {
     }
   };
 
-  const handleContactRequest = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (id && user) {
-      setIsSendingRequest(true);
-      try {
-        await createContactRequest(
-          id,
-          contactForm.date,
-          contactForm.time,
-          contactForm.location,
-          contactForm.message,
-          user.name
-        );
-        
-        // Reload report and close modal
-        const updatedReport = await getReportById(id);
-        setReport(updatedReport);
-        setShowContactModal(false);
-        
-        // Reset form
-        setContactForm({
-          date: '',
-          time: '',
-          location: '',
-          message: ''
-        });
-      } catch (error) {
-        console.error('Failed to send contact request', error);
-      } finally {
-        setIsSendingRequest(false);
-      }
-    }
-  };
+
 
   if (!report) {
     return (
@@ -393,41 +352,7 @@ export function ReportDetail() {
             <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
               <h3 className="font-semibold text-gray-900 mb-4">Aksi Cepat</h3>
               <div className="space-y-3">
-                {/* Contact Request Button - Only for High/Critical Cases */}
-                {(report.riskLevel === 'high' || report.riskLevel === 'critical') && !report.contactRequest && (
-                  <button
-                    onClick={() => setShowContactModal(true)}
-                    className="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-medium hover:from-purple-700 hover:to-purple-800 transition-all shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2"
-                  >
-                    <Phone className="w-4 h-4" />
-                    Hubungi Siswa
-                  </button>
-                )}
-                
-                {/* Show contact request status if exists */}
-                {report.contactRequest && (
-                  <div className="p-4 bg-purple-50 rounded-xl border border-purple-200">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Phone className="w-4 h-4 text-purple-600" />
-                      <p className="text-sm font-semibold text-purple-900">Permintaan Pertemuan</p>
-                    </div>
-                    <p className="text-xs text-purple-700 mb-1">
-                      📅 {report.contactRequest.scheduledDate} • {report.contactRequest.scheduledTime}
-                    </p>
-                    <p className="text-xs text-purple-700 mb-2">
-                      📍 {report.contactRequest.location}
-                    </p>
-                    <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${
-                      report.contactRequest.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                      report.contactRequest.status === 'accepted' ? 'bg-green-100 text-green-700' :
-                      'bg-red-100 text-red-700'
-                    }`}>
-                      {report.contactRequest.status === 'pending' ? '⏳ Menunggu Respon' :
-                       report.contactRequest.status === 'accepted' ? '✅ Diterima' : '❌ Ditolak'}
-                    </span>
-                  </div>
-                )}
-                
+
                 <button
                   onClick={() => handleStatusChange('in-progress')}
                   className="w-full py-3 px-4 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
@@ -505,84 +430,7 @@ export function ReportDetail() {
           </div>
         </div>
 
-        {/* Contact Modal */}
-        <div
-          className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center ${
-            showContactModal ? 'visible' : 'hidden'
-          }`}
-        >
-          <div className="bg-white rounded-2xl shadow-lg p-6 w-96">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-900">Ajukan Kontak</h3>
-              <button
-                onClick={() => setShowContactModal(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <form onSubmit={handleContactRequest}>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm text-gray-600">Tanggal</label>
-                  <input
-                    type="date"
-                    value={contactForm.date}
-                    onChange={(e) => setContactForm({ ...contactForm, date: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="text-sm text-gray-600">Waktu</label>
-                  <input
-                    type="time"
-                    value={contactForm.time}
-                    onChange={(e) => setContactForm({ ...contactForm, time: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="text-sm text-gray-600">Lokasi</label>
-                  <input
-                    type="text"
-                    value={contactForm.location}
-                    onChange={(e) => setContactForm({ ...contactForm, location: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="text-sm text-gray-600">Pesan</label>
-                  <textarea
-                    value={contactForm.message}
-                    onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-sm"
-                  />
-                </div>
-              </div>
-              <button
-                type="submit"
-                disabled={isSendingRequest}
-                className={`w-full mt-4 py-2 px-4 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-colors ${
-                  isSendingRequest 
-                    ? 'bg-green-600 text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {isSendingRequest ? (
-                  <>
-                    <CheckCircle2 className="w-4 h-4" />
-                    Mengirim...
-                  </>
-                ) : (
-                  <>
-                    <Phone className="w-4 h-4" />
-                    Ajukan Kontak
-                  </>
-                )}
-              </button>
-            </form>
-          </div>
-        </div>
+
       </div>
     </div>
   );

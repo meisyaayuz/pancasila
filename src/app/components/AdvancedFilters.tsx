@@ -26,12 +26,9 @@ export function AdvancedFilters({ onFilterChange }: AdvancedFiltersProps) {
     grade: []
   });
 
-  // Class options: 10, 11, 12 × IPA-1..6, IPS-1..6
+  // Class options: 10, 11, 12 × 1..12
   const gradeNumbers = ['10', '11', '12'];
-  const majorClasses = [
-    'IPA-1', 'IPA-2', 'IPA-3', 'IPA-4', 'IPA-5', 'IPA-6',
-    'IPS-1', 'IPS-2', 'IPS-3', 'IPS-4', 'IPS-5', 'IPS-6'
-  ];
+  const majorClasses = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
   const [selectedGradeNum, setSelectedGradeNum] = useState<string>('10');
 
   const riskLevels = ['low', 'medium', 'high', 'critical'];
@@ -270,7 +267,7 @@ export function AdvancedFilters({ onFilterChange }: AdvancedFiltersProps) {
                   {/* Class chips */}
                   <div className="grid grid-cols-4 gap-1.5">
                     {majorClasses.map(cls => {
-                      const fullClass = `${selectedGradeNum} ${cls}`;
+                      const fullClass = `${selectedGradeNum}-${cls}`;
                       const isActive = filters.grade.includes(fullClass);
                       return (
                         <button

@@ -137,16 +137,11 @@ export function DashboardSimple() {
     const matchesCategory = activeFilters.category.length === 0 ||
       report.categories.some(c => activeFilters.category.includes(c));
 
-    // Grade — report.studentClass is e.g. "XII IPS 2", filter value is e.g. "12 IPS-2"
-    // We do a loose match: if any selected grade's grade-number and class number appear in studentClass
+    // Grade — report.studentClass is e.g. "10-1", filter value is e.g. "10-1"
     const matchesGrade = activeFilters.grade.length === 0 || activeFilters.grade.some(g => {
-      const [num, cls] = g.split(' ');  // e.g. '10', 'IPA-1'
-      const [major, clsNum] = cls.split('-'); // e.g. 'IPA', '1'
-      const gradeRoman = num === '10' ? 'X' : num === '11' ? 'XI' : 'XII';
       const studentClass = (report.studentClass || '').toUpperCase();
-      return studentClass.includes(gradeRoman) &&
-             studentClass.includes(major) &&
-             studentClass.includes(clsNum);
+      const filterGrade = g.toUpperCase();
+      return studentClass === filterGrade || studentClass.includes(filterGrade);
     });
 
     // Date Range

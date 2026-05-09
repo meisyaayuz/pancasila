@@ -11,6 +11,7 @@ export function ForgotPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [error, setError] = useState('');
+  const [resetUrl, setResetUrl] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +24,8 @@ export function ForgotPassword() {
 
     setIsLoading(true);
     try {
-      await api.post('/forgot-password', { email });
+      const response = await api.post('/forgot-password', { email });
+      setResetUrl(response.data.reset_url || '');
       setIsSent(true);
     } catch (err: any) {
       const message = err.response?.data?.message || 'Terjadi kesalahan. Silakan coba lagi.';
@@ -141,13 +143,26 @@ export function ForgotPassword() {
               <p className="text-sm text-gray-600 mb-2 leading-relaxed max-w-sm mx-auto">
                 Link reset password telah dikirim ke email <span className="font-semibold text-purple-600">{email}</span>.
               </p>
-              <p className="text-sm text-gray-500 mb-8 leading-relaxed max-w-sm mx-auto">
+              <p className="text-sm text-gray-500 mb-6 leading-relaxed max-w-sm mx-auto">
                 Silakan periksa inbox atau folder spam Anda. Link reset berlaku selama 60 menit.
               </p>
 
+              {/* Development: Show reset link directly */}
+              {resetUrl && (
+                <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl text-left">
+                  <p className="text-xs font-semibold text-blue-700 mb-2">🔧 Link Reset (Development):</p>
+                  <a
+                    href={resetUrl}
+                    className="text-xs text-blue-600 underline break-all hover:text-blue-800"
+                  >
+                    {resetUrl}
+                  </a>
+                </div>
+              )}
+
               <div className="space-y-3">
                 <button
-                  onClick={() => { setIsSent(false); setEmail(''); }}
+                  onClick={() => { setIsSent(false); setEmail(''); setResetUrl(''); }}
                   className="w-full py-3 rounded-xl bg-gray-100 text-gray-700 text-sm font-medium hover:bg-gray-200 transition-colors"
                 >
                   Kirim Ulang ke Email Lain
